@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.arrowStyleAliases = exports.headStyleAliases = void 0;
 var wayPointLogic = function (from, to) {
     // is there some super smart way to do this?
     var dx = to.point[0] - from.point[0];

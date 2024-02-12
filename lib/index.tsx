@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { arrowStyleAliases, headStyleAliases } from "./styles";
 
 interface Props {
@@ -309,12 +309,12 @@ const update = (el: HTMLDivElement) => {
       )
   );
 
-  render(
+  const root = createRoot(holder!.firstChild as SVGElement);
+  root.render(
     <>
       <defs>{markerElements}</defs>
       {pathElements}
-    </>,
-    holder!.firstChild as SVGElement
+    </>
   );
 };
 

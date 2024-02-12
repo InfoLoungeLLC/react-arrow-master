@@ -1,6 +1,7 @@
 {
   "name": "react-arrow-master",
   "version": "0.3.2",
+  "private": true,
   "description": "Draw SVG arrows in your React Application!",
   "main": "index.tsx",
   "scripts": {
@@ -19,18 +20,18 @@
   "license": "MIT",
   "homepage": "https://github.com/lukasjapan/react-arrow-master",
   "devDependencies": {
-    "@types/react": "^16.9.35",
-    "@types/react-color": "^3.0.2",
-    "@types/react-dom": "^16.9.8",
-    "html-webpack-plugin": "^4.3.0",
-    "react": "^16.13.1",
-    "react-color": "^2.18.1",
-    "react-dom": "^16.13.1",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.8.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
+    "@types/react": "^18.2.55",
+    "@types/react-color": "^3.0.11",
+    "@types/react-dom": "^18.2.19",
+    "html-webpack-plugin": "^5.6.0",
+    "react": "^18.2.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.2.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "files": [
     "index.js",
@@ -39,6 +40,6 @@
     "styles.d.ts"
   ],
   "peerDependencies": {
-    "react": "^16"
+    "react": "^18"
   }
 }

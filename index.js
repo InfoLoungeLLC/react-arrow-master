@@ -10,16 +10,19 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ArrowArea = void 0;
 var React = require("react");
-var react_dom_1 = require("react-dom");
+var client_1 = require("react-dom/client");
 var styles_1 = require("./styles");
 var ARROWMASTER_CLASS = "__react_arrowmaster";
 var requireLocation = function (input) {
@@ -134,7 +137,7 @@ var buildPath = function (holder, arrow, defaultArrowStyle) {
             o[1] + v[1] * fx + w[1] * fy,
         ];
     });
-    var points = __spreadArrays([from.point], others, [to.point]);
+    var points = __spreadArray(__spreadArray([from.point], others, true), [to.point], false);
     if (headPoints === null || headPoints === void 0 ? void 0 : headPoints.adjust) {
         var adj = headPoints.adjust;
         var b = points.pop();
@@ -155,36 +158,37 @@ function notNull(value) {
 }
 var update = function (el) {
     var arrows = JSON.parse(el.dataset.arrows);
-    var holder = el.closest("." + ARROWMASTER_CLASS);
+    var holder = el.closest(".".concat(ARROWMASTER_CLASS));
     var paths = arrows.arrows
         .map(function (a) { return buildPath(holder, a, arrows.defaultArrowStyle); })
         .filter(notNull);
-    var prefix = "p" + Math.random().toString(16).substr(2, 8);
+    var prefix = "p".concat(Math.random().toString(16).substr(2, 8));
     var pathElements = paths.map(function (path, i) {
         var d;
         var s = path.points.shift().join(" ");
         if (path.curved && path.points.length > 1) {
             var c = path.points.length > 2
-                ? "C " + path.points.shift().join(" ") + ", " + path.points
+                ? "C ".concat(path.points.shift().join(" "), ", ").concat(path.points
                     .shift()
-                    .join(" ") + ","
-                : "Q " + path.points.shift().join(" ") + ",";
+                    .join(" "), ",")
+                : "Q ".concat(path.points.shift().join(" "), ",");
             var e = path.points.map(function (p) { return p.join(" "); }).join(" T ");
-            d = "M " + s + " " + c + " " + e;
+            d = "M ".concat(s, " ").concat(c, " ").concat(e);
         }
         else {
             var e = path.points.map(function (p) { return p.join(" "); }).join(" L ");
-            d = "M " + s + " L " + e;
+            d = "M ".concat(s, " L ").concat(e);
         }
-        return (React.createElement("path", { key: "path-" + prefix + "-" + i, d: d, stroke: path.color, strokeWidth: path.width, fill: "none", markerEnd: path.headPoints ? "url(#" + prefix + "-" + i + ")" : undefined }));
+        return (React.createElement("path", { key: "path-".concat(prefix, "-").concat(i), d: d, stroke: path.color, strokeWidth: path.width, fill: "none", markerEnd: path.headPoints ? "url(#".concat(prefix, "-").concat(i, ")") : undefined }));
     });
     var markerElements = paths.map(function (path, i) {
-        return path.headPoints && (React.createElement("marker", { key: "marker-" + prefix + "-" + i, id: prefix + "-" + i, markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto" },
+        return path.headPoints && (React.createElement("marker", { key: "marker-".concat(prefix, "-").concat(i), id: "".concat(prefix, "-").concat(i), markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto" },
             React.createElement("path", { d: path.headPoints.svgPath, fill: path.headPoints.hollow ? "none" : path.color, stroke: path.headPoints.hollow ? path.color : "none" })));
     });
-    react_dom_1.render(React.createElement(React.Fragment, null,
+    var root = (0, client_1.createRoot)(holder.firstChild);
+    root.render(React.createElement(React.Fragment, null,
         React.createElement("defs", null, markerElements),
-        pathElements), holder.firstChild);
+        pathElements));
 };
 var attach = function (el, arrows) {
     if (!el) {
@@ -201,7 +205,7 @@ var attach = function (el, arrows) {
     }
     el.dataset.arrows = JSON.stringify(arrows);
 };
-exports.ArrowArea = function (_a) {
+var ArrowArea = function (_a) {
     var arrows = _a.arrows, children = _a.children, _b = _a.defaultArrowStyle, defaultArrowStyle = _b === void 0 ? {} : _b;
     return (React.createElement("div", { className: ARROWMASTER_CLASS, style: { position: "relative" } },
         React.createElement("svg", { style: {
@@ -219,4 +223,5 @@ exports.ArrowArea = function (_a) {
                 });
             } }, children)));
 };
+exports.ArrowArea = ArrowArea;
 exports.default = exports.ArrowArea;
