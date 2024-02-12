@@ -3,7 +3,7 @@
   "version": "0.3.2",
   "private": true,
   "description": "Draw SVG arrows in your React Application!",
-  "main": "index.tsx",
+  "main": "index.js",
   "scripts": {
     "build": "tsc && cp -r ./dist/lib/* .",
     "start": "webpack-dev-server --color"
