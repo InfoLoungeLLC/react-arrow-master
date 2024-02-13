@@ -22,7 +22,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrowArea = void 0;
 var React = require("react");
-var client_1 = require("react-dom/client");
+var react_dom_1 = require("react-dom");
 var styles_1 = require("./styles");
 var ARROWMASTER_CLASS = "__react_arrowmaster";
 var requireLocation = function (input) {
@@ -185,10 +185,9 @@ var update = function (el) {
         return path.headPoints && (React.createElement("marker", { key: "marker-".concat(prefix, "-").concat(i), id: "".concat(prefix, "-").concat(i), markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto" },
             React.createElement("path", { d: path.headPoints.svgPath, fill: path.headPoints.hollow ? "none" : path.color, stroke: path.headPoints.hollow ? path.color : "none" })));
     });
-    var root = (0, client_1.createRoot)(holder.firstChild);
-    root.render(React.createElement(React.Fragment, null,
+    (0, react_dom_1.render)(React.createElement(React.Fragment, null,
         React.createElement("defs", null, markerElements),
-        pathElements));
+        pathElements), holder.firstChild);
 };
 var attach = function (el, arrows) {
     if (!el) {
