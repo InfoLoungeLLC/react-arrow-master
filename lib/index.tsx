@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from 'react-dom';
+import { createRoot } from "react-dom/client";
 import { arrowStyleAliases, headStyleAliases } from "./styles";
 
 interface Props {
@@ -249,7 +249,7 @@ function notNull<T>(value: T | null): value is T {
   return value !== null;
 }
 
-const update = (el: HTMLDivElement) => {
+const update = (el: HTMLDivElement, rootRef: any) => {
   const arrows: Arrows = JSON.parse(el.dataset.arrows!);
   const holder = el.closest(`.${ARROWMASTER_CLASS}`) as HTMLElement;
 
@@ -309,28 +309,30 @@ const update = (el: HTMLDivElement) => {
       )
   );
 
-  render(
+  if (!rootRef.current) {
+    rootRef.current = createRoot(holder!.firstChild as SVGElement);
+  }
+  rootRef.current.render(
     <>
       <defs>{markerElements}</defs>
       {pathElements}
     </>,
-    holder!.firstChild as SVGElement
   );
 };
 
-const attach = (el: HTMLDivElement | null, arrows: Arrows) => {
+const attach = (el: HTMLDivElement | null, arrows: Arrows, rootRef: any) => {
   if (!el) {
     return;
   }
 
   // TODO: make this better... maybe just one global listening... should also cleanup...
   if (!el.dataset.arrows) {
-    new MutationObserver(() => update(el)).observe(el, {
+    new MutationObserver(() => update(el, rootRef)).observe(el, {
       attributes: true,
       childList: true,
       subtree: true,
     });
-    window.addEventListener("resize", () => update(el));
+    window.addEventListener("resize", () => update(el, rootRef));
   }
 
   el.dataset.arrows = JSON.stringify(arrows);
@@ -340,35 +342,43 @@ export const ArrowArea = ({
   arrows,
   children,
   defaultArrowStyle = {},
-}: Props) => (
-  <div className={ARROWMASTER_CLASS} style={{ position: "relative" }}>
-    <svg
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        top: 0,
-        left: 0,
-        pointerEvents: "none",
-      }}
-    />
-    <div
-      ref={(el) =>
-        attach(el, {
-          arrows,
-          defaultArrowStyle: {
-            color: "#000000",
-            width: 1,
-            head: "default",
-            arrow: "none",
-            ...defaultArrowStyle,
-          },
-        })
-      }
-    >
-      {children}
+}: Props) => {
+  const rootRef = React.useRef(null);
+
+  return (
+    <div className={ARROWMASTER_CLASS} style={{ position: "relative" }}>
+      <svg
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          top: 0,
+          left: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        ref={(el) =>
+          attach(
+            el,
+            {
+              arrows,
+              defaultArrowStyle: {
+                color: "#000000",
+                width: 1,
+                head: "default",
+                arrow: "none",
+                ...defaultArrowStyle,
+              },
+            },
+            rootRef,
+          )
+        }
+      >
+        {children}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ArrowArea;

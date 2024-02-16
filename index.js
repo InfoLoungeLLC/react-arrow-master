@@ -22,7 +22,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrowArea = void 0;
 var React = require("react");
-var react_dom_1 = require("react-dom");
+var client_1 = require("react-dom/client");
 var styles_1 = require("./styles");
 var ARROWMASTER_CLASS = "__react_arrowmaster";
 var requireLocation = function (input) {
@@ -156,7 +156,7 @@ var buildPath = function (holder, arrow, defaultArrowStyle) {
 function notNull(value) {
     return value !== null;
 }
-var update = function (el) {
+var update = function (el, rootRef) {
     var arrows = JSON.parse(el.dataset.arrows);
     var holder = el.closest(".".concat(ARROWMASTER_CLASS));
     var paths = arrows.arrows
@@ -185,27 +185,31 @@ var update = function (el) {
         return path.headPoints && (React.createElement("marker", { key: "marker-".concat(prefix, "-").concat(i), id: "".concat(prefix, "-").concat(i), markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto" },
             React.createElement("path", { d: path.headPoints.svgPath, fill: path.headPoints.hollow ? "none" : path.color, stroke: path.headPoints.hollow ? path.color : "none" })));
     });
-    (0, react_dom_1.render)(React.createElement(React.Fragment, null,
+    if (!rootRef.current) {
+        rootRef.current = (0, client_1.createRoot)(holder.firstChild);
+    }
+    rootRef.current.render(React.createElement(React.Fragment, null,
         React.createElement("defs", null, markerElements),
-        pathElements), holder.firstChild);
+        pathElements));
 };
-var attach = function (el, arrows) {
+var attach = function (el, arrows, rootRef) {
     if (!el) {
         return;
     }
     // TODO: make this better... maybe just one global listening... should also cleanup...
     if (!el.dataset.arrows) {
-        new MutationObserver(function () { return update(el); }).observe(el, {
+        new MutationObserver(function () { return update(el, rootRef); }).observe(el, {
             attributes: true,
             childList: true,
             subtree: true,
         });
-        window.addEventListener("resize", function () { return update(el); });
+        window.addEventListener("resize", function () { return update(el, rootRef); });
     }
     el.dataset.arrows = JSON.stringify(arrows);
 };
 var ArrowArea = function (_a) {
     var arrows = _a.arrows, children = _a.children, _b = _a.defaultArrowStyle, defaultArrowStyle = _b === void 0 ? {} : _b;
+    var rootRef = React.useRef(null);
     return (React.createElement("div", { className: ARROWMASTER_CLASS, style: { position: "relative" } },
         React.createElement("svg", { style: {
                 position: "absolute",
@@ -219,7 +223,7 @@ var ArrowArea = function (_a) {
                 return attach(el, {
                     arrows: arrows,
                     defaultArrowStyle: __assign({ color: "#000000", width: 1, head: "default", arrow: "none" }, defaultArrowStyle),
-                });
+                }, rootRef);
             } }, children)));
 };
 exports.ArrowArea = ArrowArea;
