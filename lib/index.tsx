@@ -1,11 +1,13 @@
-import * as React from "react";
+import { useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { arrowStyleAliases, headStyleAliases } from "./styles";
+
+import type { ReactNode } from "react";
 
 interface Props {
   arrows: Arrow[];
   defaultArrowStyle?: Partial<ArrowStyle>;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export type Point = [number, number];
@@ -343,7 +345,7 @@ export const ArrowArea = ({
   children,
   defaultArrowStyle = {},
 }: Props) => {
-  const rootRef = React.useRef(null);
+  const rootRef = useRef(null);
 
   return (
     <div className={ARROWMASTER_CLASS} style={{ position: "relative" }}>

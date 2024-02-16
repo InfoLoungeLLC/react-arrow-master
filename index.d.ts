@@ -1,8 +1,8 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 interface Props {
     arrows: Arrow[];
     defaultArrowStyle?: Partial<ArrowStyle>;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 export type Point = [number, number];
 export interface DirectedPoint {
@@ -59,5 +59,5 @@ export interface PathSpec {
     color: string;
     headPoints: HeadPointSpec | null;
 }
-export declare const ArrowArea: ({ arrows, children, defaultArrowStyle, }: Props) => React.JSX.Element;
+export declare const ArrowArea: ({ arrows, children, defaultArrowStyle, }: Props) => import("react/jsx-runtime").JSX.Element;
 export default ArrowArea;

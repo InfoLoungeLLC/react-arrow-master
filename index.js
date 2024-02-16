@@ -21,7 +21,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrowArea = void 0;
-var React = require("react");
+var jsx_runtime_1 = require("react/jsx-runtime");
+var react_1 = require("react");
 var client_1 = require("react-dom/client");
 var styles_1 = require("./styles");
 var ARROWMASTER_CLASS = "__react_arrowmaster";
@@ -179,18 +180,15 @@ var update = function (el, rootRef) {
             var e = path.points.map(function (p) { return p.join(" "); }).join(" L ");
             d = "M ".concat(s, " L ").concat(e);
         }
-        return (React.createElement("path", { key: "path-".concat(prefix, "-").concat(i), d: d, stroke: path.color, strokeWidth: path.width, fill: "none", markerEnd: path.headPoints ? "url(#".concat(prefix, "-").concat(i, ")") : undefined }));
+        return ((0, jsx_runtime_1.jsx)("path", { d: d, stroke: path.color, strokeWidth: path.width, fill: "none", markerEnd: path.headPoints ? "url(#".concat(prefix, "-").concat(i, ")") : undefined }, "path-".concat(prefix, "-").concat(i)));
     });
     var markerElements = paths.map(function (path, i) {
-        return path.headPoints && (React.createElement("marker", { key: "marker-".concat(prefix, "-").concat(i), id: "".concat(prefix, "-").concat(i), markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto" },
-            React.createElement("path", { d: path.headPoints.svgPath, fill: path.headPoints.hollow ? "none" : path.color, stroke: path.headPoints.hollow ? path.color : "none" })));
+        return path.headPoints && ((0, jsx_runtime_1.jsx)("marker", { id: "".concat(prefix, "-").concat(i), markerWidth: path.headPoints.size, markerHeight: path.headPoints.size, refX: path.headPoints.size - path.headPoints.adjust, refY: path.headPoints.size / 2, orient: "auto", children: (0, jsx_runtime_1.jsx)("path", { d: path.headPoints.svgPath, fill: path.headPoints.hollow ? "none" : path.color, stroke: path.headPoints.hollow ? path.color : "none" }) }, "marker-".concat(prefix, "-").concat(i)));
     });
     if (!rootRef.current) {
         rootRef.current = (0, client_1.createRoot)(holder.firstChild);
     }
-    rootRef.current.render(React.createElement(React.Fragment, null,
-        React.createElement("defs", null, markerElements),
-        pathElements));
+    rootRef.current.render((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)("defs", { children: markerElements }), pathElements] }));
 };
 var attach = function (el, arrows, rootRef) {
     if (!el) {
@@ -209,22 +207,20 @@ var attach = function (el, arrows, rootRef) {
 };
 var ArrowArea = function (_a) {
     var arrows = _a.arrows, children = _a.children, _b = _a.defaultArrowStyle, defaultArrowStyle = _b === void 0 ? {} : _b;
-    var rootRef = React.useRef(null);
-    return (React.createElement("div", { className: ARROWMASTER_CLASS, style: { position: "relative" } },
-        React.createElement("svg", { style: {
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                top: 0,
-                left: 0,
-                pointerEvents: "none",
-            } }),
-        React.createElement("div", { ref: function (el) {
-                return attach(el, {
-                    arrows: arrows,
-                    defaultArrowStyle: __assign({ color: "#000000", width: 1, head: "default", arrow: "none" }, defaultArrowStyle),
-                }, rootRef);
-            } }, children)));
+    var rootRef = (0, react_1.useRef)(null);
+    return ((0, jsx_runtime_1.jsxs)("div", { className: ARROWMASTER_CLASS, style: { position: "relative" }, children: [(0, jsx_runtime_1.jsx)("svg", { style: {
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    top: 0,
+                    left: 0,
+                    pointerEvents: "none",
+                } }), (0, jsx_runtime_1.jsx)("div", { ref: function (el) {
+                    return attach(el, {
+                        arrows: arrows,
+                        defaultArrowStyle: __assign({ color: "#000000", width: 1, head: "default", arrow: "none" }, defaultArrowStyle),
+                    }, rootRef);
+                }, children: children })] }));
 };
 exports.ArrowArea = ArrowArea;
 exports.default = exports.ArrowArea;
