@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { arrowStyleAliases, headStyleAliases } from "./styles";
+import { arrowStyleAliases, headStyleAliases } from "./styles.js";
 
 import type { ReactNode } from "react";
 

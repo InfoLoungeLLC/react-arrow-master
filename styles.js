@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.arrowStyleAliases = exports.headStyleAliases = void 0;
-var wayPointLogic = function (from, to) {
+const wayPointLogic = (from, to) => {
     // is there some super smart way to do this?
-    var dx = to.point[0] - from.point[0];
-    var dy = to.point[1] - from.point[1];
+    const dx = to.point[0] - from.point[0];
+    const dy = to.point[1] - from.point[1];
     if (dx * from.direction[0] > 0 && dy * to.direction[1] < 0) {
         // single point (counter-clock)
         return [
@@ -60,7 +57,7 @@ var wayPointLogic = function (from, to) {
         return [];
     }
 };
-exports.headStyleAliases = {
+export const headStyleAliases = {
     default: {
         size: 10,
         adjust: 10,
@@ -99,7 +96,7 @@ exports.headStyleAliases = {
     },
     none: null,
 };
-exports.arrowStyleAliases = {
+export const arrowStyleAliases = {
     none: { curved: false, points: [] },
     clipClockwise: {
         curved: false,

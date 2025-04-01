@@ -4,6 +4,7 @@
   "private": true,
   "description": "Draw SVG arrows in your React Application!",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc && cp -r ./dist/lib/* .",
     "start": "webpack-dev-server --color"
