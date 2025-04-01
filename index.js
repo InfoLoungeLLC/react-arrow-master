@@ -57,7 +57,6 @@ const getPoint = (holder, location) => {
 const diff = (a, b) => [b[0] - a[0], b[1] - a[1]];
 const len = (a) => Math.sqrt(a[0] * a[0] + a[1] * a[1]);
 const buildPath = (holder, arrow, defaultArrowStyle) => {
-    var _a, _b, _c, _d, _e;
     const from = getPoint(holder, arrow.from);
     const to = getPoint(holder, arrow.to);
     if (!from || !to) {
@@ -81,11 +80,11 @@ const buildPath = (holder, arrow, defaultArrowStyle) => {
         to.direction[0] = to.direction[0] * Math.abs(dx);
         to.direction[1] = to.direction[1] * Math.abs(dy);
     }
-    const style = (_a = arrow.style) !== null && _a !== void 0 ? _a : defaultArrowStyle;
-    const width = (_b = style.width) !== null && _b !== void 0 ? _b : defaultArrowStyle.width;
-    const color = (_c = style.color) !== null && _c !== void 0 ? _c : defaultArrowStyle.color;
-    const headStyle = (_d = style.head) !== null && _d !== void 0 ? _d : defaultArrowStyle.head;
-    const midPointSpec = (_e = style.arrow) !== null && _e !== void 0 ? _e : defaultArrowStyle.arrow;
+    const style = arrow.style ?? defaultArrowStyle;
+    const width = style.width ?? defaultArrowStyle.width;
+    const color = style.color ?? defaultArrowStyle.color;
+    const headStyle = style.head ?? defaultArrowStyle.head;
+    const midPointSpec = style.arrow ?? defaultArrowStyle.arrow;
     const midPoints = typeof midPointSpec == "string"
         ? arrowStyleAliases[midPointSpec]
         : midPointSpec;
@@ -114,7 +113,7 @@ const buildPath = (holder, arrow, defaultArrowStyle) => {
         ];
     });
     const points = [from.point, ...others, to.point];
-    if (headPoints === null || headPoints === void 0 ? void 0 : headPoints.adjust) {
+    if (headPoints?.adjust) {
         const adj = headPoints.adjust;
         const b = points.pop();
         const a = points.pop();
@@ -189,7 +188,13 @@ export const ArrowArea = ({ arrows, children, defaultArrowStyle = {}, }) => {
                     pointerEvents: "none",
                 } }), _jsx("div", { ref: (el) => attach(el, {
                     arrows,
-                    defaultArrowStyle: Object.assign({ color: "#000000", width: 1, head: "default", arrow: "none" }, defaultArrowStyle),
+                    defaultArrowStyle: {
+                        color: "#000000",
+                        width: 1,
+                        head: "default",
+                        arrow: "none",
+                        ...defaultArrowStyle,
+                    },
                 }, rootRef), children: children })] }));
 };
 export default ArrowArea;
