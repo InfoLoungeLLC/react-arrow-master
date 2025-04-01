@@ -410,4 +410,5 @@ const App = () => {
   );
 };
 
+// @ts-expect-error
 ReactDOM.render(<App />, document.getElementById("container"));
